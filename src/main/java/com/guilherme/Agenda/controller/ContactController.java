@@ -33,15 +33,15 @@ public class ContactController {
         return ResponseEntity.ok().body(object);
     }
 
-    @GetMapping(value = "/firstName")
-    public ResponseEntity<Optional<Contact>> findByFirstName(@PathVariable String firstName){
-        Optional<Contact> object = contactService.findByFirstName(firstName);
+    @GetMapping(value = "/firstName/{firstName}")
+    public ResponseEntity<Contact> findByFirstName(@PathVariable String firstName){
+        Contact object = contactService.findByFirstName(firstName);
         return ResponseEntity.ok().body(object);
     }
 
-    @GetMapping(value = "/lastName")
-    public ResponseEntity<Optional<Contact>> findByLastName(@PathVariable String lastName){
-        Optional<Contact> object = contactService.findByLastName(lastName);
+    @GetMapping(value = "/lastName/{lastName}")
+    public ResponseEntity<Contact> findByLastName(@PathVariable String lastName){
+        Contact object = contactService.findByLastName(lastName);
         return ResponseEntity.ok().body(object);
     }
 
@@ -73,8 +73,8 @@ public class ContactController {
         return ResponseEntity.noContent().build();
     }
 
-    @RequestMapping(value = "/page/contacts")
-    public ResponseEntity<Page> findPage(
+    @GetMapping(value = "/page/{page}")
+    public ResponseEntity<Page<Contact>> findPage(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "linesPerPage", defaultValue = "10") Integer linesPerPage,
             @RequestParam(value = "orderBy", defaultValue = "name") String orderBy,
@@ -82,5 +82,4 @@ public class ContactController {
         Page<Contact> list = contactService.findPage(page, linesPerPage, orderBy, direction);
         return ResponseEntity.ok().body(list);
     }
-
 }

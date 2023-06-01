@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.logging.Handler;
 
 public class ContactUpdateInsert implements ConstraintValidator<ContactUpdate, ContactDTO> {
 
@@ -29,7 +28,7 @@ public class ContactUpdateInsert implements ConstraintValidator<ContactUpdate, C
 
     @Override
     public boolean isValid(ContactDTO contactDTO, ConstraintValidatorContext context){
-        @SuppressWarnings("Unchecked")
+
         Map<String, String> map = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
         Integer uriId = Integer.parseInt(map.get("id"));
 

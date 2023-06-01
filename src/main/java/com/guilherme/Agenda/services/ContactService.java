@@ -42,12 +42,12 @@ public class ContactService {
         return repository.findAll();
     }
 
-    public Optional<Contact> findByFirstName(String firstName){
-        return Optional.ofNullable(repository.findByFirstName(firstName).orElse(null));
+    public Contact findByFirstName(String firstName){
+        return repository.findByFirstName(firstName).orElse(null);
     }
 
-    public Optional<Contact> findByLastName(String lastName){
-        return Optional.ofNullable(repository.findByFirstName(lastName).orElse(null));
+    public Contact findByLastName(String lastName){
+        return repository.findByLastName(lastName).orElse(null);
     }
 
     public void deleteById(Long id) {
@@ -99,5 +99,4 @@ public class ContactService {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
         return repository.findAll(pageRequest);
     }
-
 }

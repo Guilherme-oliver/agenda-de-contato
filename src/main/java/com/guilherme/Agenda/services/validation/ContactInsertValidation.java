@@ -22,6 +22,7 @@ public class ContactInsertValidation implements ConstraintValidator<ContactInser
 
     @Override
     public boolean isValid(ContactNewDTO contactNewDTO, ConstraintValidatorContext context){
+
         List<FieldMessage> list = new ArrayList<>();
 
         Optional<Contact> aux = contactRepository.findByFirstName(contactNewDTO.getFirstName());
