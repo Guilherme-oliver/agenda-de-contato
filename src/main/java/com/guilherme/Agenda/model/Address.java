@@ -11,6 +11,7 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private Long cep;
     private String publicPlaceOrRoad;
     private Integer number;

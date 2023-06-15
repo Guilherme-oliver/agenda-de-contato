@@ -43,11 +43,11 @@ public class ContactService {
     }
 
     public Contact findByFirstName(String firstName){
-        return repository.findByFirstName(firstName).orElse(null);
+        return repository.findByFirstName(firstName);
     }
 
     public Contact findByLastName(String lastName){
-        return repository.findByLastName(lastName).orElse(null);
+        return repository.findByLastName(lastName);
     }
 
     public void deleteById(Long id) {
@@ -88,15 +88,19 @@ public class ContactService {
         return repository.save(newContact);
     }
 
-    public Contact insert(Contact contact){
-        contact.setId(null);
-        addressRepository.saveAll(contact.getAddresses());
-        phoneRepository.saveAll(contact.getPhones());
-        return repository.save(contact);
-    }
+    public Contact addContact(Contact contact) {
+        // Check if a contact with the same first name or last name already exists
+        Contact existingContactByFirstName = repository.findByFirstName(contact.getFirstName());
+        Contact existingContactByLastName = repository.findByLastName(contact.getLastName());
 
-    public Page<Contact> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-        return repository.findAll(pageRequest);
+        if (existingContactByFirstName != null) {
+            throw new IllegalArgumentException("A contact with the same first name already exists");
+        }
+
+        if (existingContactByLastName != null) {
+            throw new IllegalArgumentException("A contact with the same last name already exists");
+        }
+        // Save the new contact
+        return repository.save(contact);
     }
 }

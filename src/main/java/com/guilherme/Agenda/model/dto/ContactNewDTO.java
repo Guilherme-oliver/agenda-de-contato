@@ -1,12 +1,15 @@
 package com.guilherme.Agenda.model.dto;
 
 import com.guilherme.Agenda.services.validation.ContactInsert;
+import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @ContactInsert
 public class ContactNewDTO {
+
+    private Long id;
 
     @NotEmpty
     @Size(min = 2, max = 20, message = "Length must be between 2 and 80 characters!")
@@ -42,6 +45,10 @@ public class ContactNewDTO {
     private Long idPhone;
 
     public ContactNewDTO(){}
+
+    public Long getId(){ return id; }
+
+    public void setId(Long id) { this.id = id; }
 
     public String getFirstName() {
         return firstName;

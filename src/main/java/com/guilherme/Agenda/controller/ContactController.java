@@ -59,10 +59,13 @@ public class ContactController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Contact> save(@Valid @RequestBody ContactNewDTO object){
-        Contact contact = contactService.fromNewDTO(object);
-        contact = contactService.insert(contact);
-        return ResponseEntity.status(HttpStatus.CREATED).body(null);
+    public ResponseEntity<Contact> addContact(@Valid @RequestBody Contact object){
+        try {
+            Contact newContact = contactService.addContact(object);
+            return ResponseEntity.ok(newContact);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(object);
+        }
     }
 
     @PutMapping

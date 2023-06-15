@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface ContactRepository extends JpaRepository<Contact, Long> {
-    Optional<Contact> findByFirstName(String firstName);
-    Optional<Contact> findByLastName(String lastName);
+    Contact findByFirstName(String firstName);
+    Contact findByLastName(String lastName);
 }
