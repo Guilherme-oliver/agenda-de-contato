@@ -82,4 +82,12 @@ public class Contact {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    public List<Phone> getPhone() {
+        return phones;
+    }
+
+    public List<Address> getAddress() {
+        return addresses;
+    }
 }

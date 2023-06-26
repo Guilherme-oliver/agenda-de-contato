@@ -15,7 +15,7 @@ public class ContactDTO {
     @Size(min = 2, max = 80, message = "Minimum 2 and maximum 80 characters")
     private String firstName, lastName;
 
-    public ContactDTO convert(Contact contact) {
+    public ContactDTO convertDto(Contact contact) {
         this.firstName = contact.getFirstName();
         this.lastName = contact.getLastName();
         return this;

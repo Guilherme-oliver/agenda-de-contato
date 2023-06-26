@@ -1,5 +1,6 @@
 package com.guilherme.Agenda.services;
 
+import com.guilherme.Agenda.model.Contact;
 import com.guilherme.Agenda.model.Phone;
 import com.guilherme.Agenda.repositories.PhoneRepository;
 import com.guilherme.Agenda.services.exceptions.DatabaseException;
@@ -7,6 +8,8 @@ import com.guilherme.Agenda.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,19 +38,30 @@ public class PhoneService {
         }
     }
 
-    public Phone insert(Phone phone){
-        return phoneRepository.save(phone);
+    public boolean isPhoneNumberUniqueForContact(Phone phone) {
+        Contact contact = phone.getContact();
+        List<Phone> existingPhones = contact.getPhones();
+        return existingPhones.stream().noneMatch(p -> p.getNumberPhone().equals(phone.getNumberPhone()));
     }
 
-    private void updateData(Phone phone, Phone obj){
-        phone.setDdd(obj.getDdd());
-        phone.setNumberPhone(obj.getNumberPhone());
+    public Phone savePhone(Phone phone) {
+        if (isPhoneNumberUniqueForContact(phone)) {
+            return phoneRepository.save(phone);
+        } else {
+            throw new IllegalArgumentException("Phone number already exists for the contact.");
+        }
     }
 
-    public Phone update(Phone phone){
-        Phone newPhone = findById(phone.getId());
-        updateData(newPhone, phone);
-        return phoneRepository.save(newPhone);
+    public Phone updatePhone(Phone updatePhone){
+        Long phoneId = updatePhone.getId();
+        Phone existingPhone = phoneRepository.findById(phoneId)
+                .orElseThrow(() -> new IllegalArgumentException("Phone number not found."));
+        existingPhone.setDdd(updatePhone.getDdd());
+        existingPhone.setNumberPhone(updatePhone.getNumberPhone());
+        return phoneRepository.save(existingPhone);
     }
 
+    public Page<Phone> getAllContacts(Pageable pageable) {
+        return phoneRepository.findAll(pageable);
+    }
 }

@@ -1,12 +1,15 @@
 package com.guilherme.Agenda.services;
 
 import com.guilherme.Agenda.model.Address;
+import com.guilherme.Agenda.model.Contact;
 import com.guilherme.Agenda.repositories.AddressRepository;
 import com.guilherme.Agenda.services.exceptions.DatabaseException;
 import com.guilherme.Agenda.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,22 +38,34 @@ public class AddressService {
         }
     }
 
-    public Address insert(Address address){
-        return addressRepository.save(address);
+    public boolean isAddressNumberUniqueForContact(Address address) {
+        Contact contact = address.getContact();
+        List<Address> existingAddress = contact.getAddresses();
+        return existingAddress.stream().noneMatch(p -> p.getPublicPlaceOrRoad().equals(address.getPublicPlaceOrRoad()));
     }
 
-    private void updateData(Address address, Address obj){
-        address.setCep(obj.getCep());
-        address.setPublicPlaceOrRoad(obj.getPublicPlaceOrRoad());
-        address.setNumber(obj.getNumber());
-        address.setCity(obj.getCity());
-        address.setState(obj.getState());
+    public Address saveAddress(Address address) {
+        if (isAddressNumberUniqueForContact(address)) {
+            return addressRepository.save(address);
+        } else {
+            throw new IllegalArgumentException("Address already exists for the contact.");
+        }
     }
 
-    public Address update(Address address){
-        Address newAddress = findById(address.getId());
-        updateData(newAddress, address);
-        return addressRepository.save(newAddress);
+    public Address updateAddress(Address updateAddress){
+        Long addressId = updateAddress.getId();
+        Address existingAddress = addressRepository.findById(addressId)
+                .orElseThrow(() -> new IllegalArgumentException("Address already exist."));
+        existingAddress.setCep(updateAddress.getCep());
+        existingAddress.setPublicPlaceOrRoad(updateAddress.getPublicPlaceOrRoad());
+        existingAddress.setNumber(updateAddress.getNumber());
+        existingAddress.setCity(updateAddress.getCity());
+        existingAddress.setState(updateAddress.getState());
+
+        return addressRepository.save(existingAddress);
     }
 
+    public Page<Address> getAllContacts(Pageable pageable) {
+        return addressRepository.findAll(pageable);
+    }
 }
