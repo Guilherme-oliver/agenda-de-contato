@@ -1,6 +1,5 @@
 package com.guilherme.Agenda.controller;
 
-import com.guilherme.Agenda.model.Contact;
 import com.guilherme.Agenda.model.Phone;
 import com.guilherme.Agenda.services.PhoneService;
 import org.springframework.data.domain.Page;
@@ -10,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -28,20 +28,21 @@ public class PhoneController {
         return ResponseEntity.ok().body(list);
     }
 
-    @GetMapping
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Phone> findById(@RequestParam Long id){
         Phone phone = phoneService.findById(id);
         return ResponseEntity.ok().body(phone);
     }
 
-    @DeleteMapping
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteById(@RequestParam Long id){
         phoneService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping
-    public ResponseEntity<Phone> addPhone(@RequestBody Phone phone) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Phone> addPhone(@Valid @RequestBody Phone phone) {
         try {
             Phone savedPhone = phoneService.savePhone(phone);
             return new ResponseEntity<>(savedPhone, HttpStatus.CREATED);

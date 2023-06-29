@@ -1,8 +1,6 @@
 package com.guilherme.Agenda.controller;
 
 import com.guilherme.Agenda.model.Address;
-import com.guilherme.Agenda.model.Contact;
-import com.guilherme.Agenda.model.Phone;
 import com.guilherme.Agenda.services.AddressService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -29,20 +28,21 @@ public class AddressController {
         return ResponseEntity.ok().body(list);
     }
 
-    @GetMapping
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Address> findById(@RequestParam Long id){
         Address address = addressService.findById(id);
         return ResponseEntity.ok().body(address);
     }
 
-    @DeleteMapping
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteById(@RequestParam Long id){
         addressService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping
-    public ResponseEntity<Address> addAddress(@RequestBody Address address) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Address> addAddress(@Valid @RequestBody Address address) {
         try {
             Address savedAddress = addressService.saveAddress(address);
             return new ResponseEntity<>(savedAddress, HttpStatus.CREATED);

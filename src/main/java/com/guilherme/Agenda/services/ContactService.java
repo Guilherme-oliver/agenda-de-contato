@@ -101,6 +101,8 @@ public class ContactService {
         address.setCity(addressDTO.getCity());
         address.setState(addressDTO.getState());
 
+        phoneRepository.save(phone);
+        addressRepository.save(address);
         return repository.save(contact);
     }
 
@@ -128,6 +130,7 @@ public class ContactService {
         phone.setDdd(phoneDTO.getDdd());
         phone.setNumberPhone(phoneDTO.getNumberPhone());
         contact.getPhones().add(phone);
+        phoneRepository.save(phone);
         return repository.save(contact);
     }
 
@@ -141,6 +144,7 @@ public class ContactService {
         address.setCity(addressDTO.getCity());
         address.setState(addressDTO.getState());
         contact.getAddresses().add(address);
+        addressRepository.save(address);
         return repository.save(contact);
     }
 
