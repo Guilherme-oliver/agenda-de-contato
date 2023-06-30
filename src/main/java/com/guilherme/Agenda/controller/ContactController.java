@@ -96,7 +96,7 @@ public class ContactController {
     public ResponseEntity<Void> update(@Valid @RequestBody ContactDTO contactDTO, @PathVariable Long id){
         Contact contact = contactService.fromDTO(contactDTO);
         contact.setId(id);
-        contact = contactService.update(contact);
+        contact = contactService.updateContact(contact);
         return ResponseEntity.noContent().build();
     }
 

@@ -76,7 +76,7 @@ public class ContactService {
         contactNewDTO.setLastName(contact.getLastName());
     }
 
-    public Contact update(Contact contact){
+    public Contact updateContact(Contact contact){
         Contact newContact = findById(contact.getId());
         updateData(newContact, contact);
         return repository.save(newContact);
