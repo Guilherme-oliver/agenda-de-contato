@@ -52,7 +52,7 @@ public class AddressController {
     }
 
     @GetMapping("/pages")
-    public ResponseEntity<List<Address>> getAllContacts(
+    public ResponseEntity<List<Address>> getAllAddress(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);

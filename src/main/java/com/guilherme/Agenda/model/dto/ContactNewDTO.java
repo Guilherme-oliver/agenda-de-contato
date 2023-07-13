@@ -1,8 +1,5 @@
 package com.guilherme.Agenda.model.dto;
 
-import com.guilherme.Agenda.services.validation.ContactInsert;
-
-@ContactInsert
 public class ContactNewDTO {
 
    private String firstName;

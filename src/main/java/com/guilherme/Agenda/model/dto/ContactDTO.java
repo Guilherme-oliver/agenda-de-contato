@@ -1,12 +1,10 @@
 package com.guilherme.Agenda.model.dto;
 
 import com.guilherme.Agenda.model.Contact;
-import com.guilherme.Agenda.services.validation.ContactUpdate;
+import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@ContactUpdate
 public class ContactDTO {
 
     private Long id;

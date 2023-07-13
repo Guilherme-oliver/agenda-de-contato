@@ -10,7 +10,6 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ContactInsertValidation implements ConstraintValidator<ContactInsert, ContactNewDTO> {
 
@@ -25,7 +24,7 @@ public class ContactInsertValidation implements ConstraintValidator<ContactInser
 
         List<FieldMessage> list = new ArrayList<>();
 
-        Optional<Contact> aux = contactRepository.findByFirstName(contactNewDTO.getFirstName());
+        Contact aux = contactRepository.findByFirstName(contactNewDTO.getFirstName());
         if (aux != null){
             list.add(new FieldMessage("Name", " Contact already exist!"));
         }
@@ -37,5 +36,4 @@ public class ContactInsertValidation implements ConstraintValidator<ContactInser
         }
         return list.isEmpty();
     }
-
 }

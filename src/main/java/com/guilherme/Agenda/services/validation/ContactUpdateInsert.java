@@ -13,7 +13,6 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class ContactUpdateInsert implements ConstraintValidator<ContactUpdate, ContactDTO> {
 
@@ -34,8 +33,8 @@ public class ContactUpdateInsert implements ConstraintValidator<ContactUpdate, C
 
         List<FieldMessage> list = new ArrayList<>();
 
-        Optional<Contact> aux = contactRepository.findByFirstName(contactDTO.getFirstName());
-        if (aux != null && aux.get().equals(uriId)) {
+        Contact aux = contactRepository.findByFirstName(contactDTO.getFirstName());
+        if (aux != null && aux.equals(uriId)) {
             list.add(new FieldMessage("Name", " Name already exist!"));
         }
 

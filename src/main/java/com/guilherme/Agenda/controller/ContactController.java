@@ -92,7 +92,7 @@ public class ContactController {
         }
     }
 
-    @PutMapping
+    @PutMapping("/update-name")
     public ResponseEntity<Void> update(@Valid @RequestBody ContactDTO contactDTO, @PathVariable Long id){
         Contact contact = contactService.fromDTO(contactDTO);
         contact.setId(id);
@@ -100,7 +100,7 @@ public class ContactController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping
+    @PutMapping("/update-phoneAndAddress")
     public ResponseEntity<Contact> updateContactWithPhoneAndAddress(
             @PathVariable("id") Long contactId,
             @RequestBody ContactNewDTO contactNewDTO) {
